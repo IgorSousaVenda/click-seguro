@@ -1,26 +1,300 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* ---- Marca: azul de confiança (nunca usar em estados) ---- */
+  --color-brand-50: #ebf3fe;
+  --color-brand-100: #d3e4fc;
+  --color-brand-200: #a8c9f8;
+  --color-brand-300: #6ba5f0;
+  --color-brand-400: #3b8ef0;
+  --color-brand-500: #1668d9; /* cor principal */
+  --color-brand-600: #1054b4;
+  --color-brand-700: #0c3f88;
+  --color-brand-800: #0a1e3d; /* azul profundo */
+  --color-brand-900: #050b18; /* quase-preto */
+
+  /* ---- Neutros ---- */
+  --color-ink-900: #0b1220;
+  --color-ink-700: #26334a;
+  --color-ink-500: #5a6880;
+  --color-ink-300: #a3aec0;
+  --color-ink-100: #e3e8f0;
+  --color-ink-50: #f5f7fb;
+
+  /* ---- Estados: reservados, nunca decorativos ---- */
+  --color-success-bg: #e7f6ee;
+  --color-success: #17864f;
+  --color-danger-bg: #fdecec;
+  --color-danger: #c4302b;
+  --color-warning-bg: #fef3e2;
+  --color-warning: #b26a00;
+
+  /* ---- Tipografia ---- */
+  --font-sans: Inter, ui-sans-serif, system-ui, sans-serif;
+
+  /* ---- Raios ---- */
+  --radius-card: 16px;
+  --radius-btn: 12px;
+  --radius-pill: 999px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================================
+   ESCALA TIPOGRÁFICA
+   h1 32/700 · h2 24/600 · h3 19/600 · body 16/400 · small 14 · caption 12
+   Altura de linha: 1.25 em títulos, 1.6 em corpo
+   ============================================================ */
+
+/* ============================================================
+   ESPAÇAMENTO — múltiplos de 4
+   4 · 8 · 12 · 16 · 24 · 32 · 48 · 64
+   Padding padrão de cartão: 20px  ·  Gap de lista: 12px
+   ============================================================ */
+
+/* ============================================================
+   REGRAS DE APLICAÇÃO
+   1. Verde e vermelho SÓ para acerto/erro. Nunca na marca, nunca decorativos.
+   2. Nunca comunicar estado só por cor — ícone + texto sempre (acessibilidade).
+   3. Contraste mínimo 4.5:1 em texto. brand-500 sobre branco cumpre.
+   4. Alvos de toque >= 44x44px.
+   5. Uma cor de destaque por ecrã. Se tudo é destaque, nada é.
+   ============================================================ */
+
+/* ---- Padrão hexagonal de fundo (só no ecrã de entrada/login) ---- */
+.mesh-bg {
+  background-color: var(--color-brand-900);
+  background-image:
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(22, 104, 217, 0.35),
+      transparent 55%
+    ),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath d='M28 0L56 16v32L28 64 0 48V16z' fill='none' stroke='%23ffffff' stroke-opacity='0.06'/%3E%3C/svg%3E");
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================================
+   COMPONENTES E ESTADOS
+   ============================================================ */
+
+/* ---- Skeleton (carregamento de conteúdo) ---- */
+@keyframes cs-shimmer {
+  0% {
+    background-position: -420px 0;
+  }
+  100% {
+    background-position: 420px 0;
+  }
+}
+.cs-skeleton {
+  background: linear-gradient(90deg, #e3e8f0 0%, #f5f7fb 50%, #e3e8f0 100%);
+  background-size: 420px 100%;
+  animation: cs-shimmer 1.3s infinite linear;
+  border-radius: 8px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-skeleton {
+    animation: none;
+    background: #e3e8f0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---- Spinner (acção em curso dentro de botões) ---- */
+@keyframes cs-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
+.cs-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: cs-spin 0.7s linear infinite;
+}
+
+/* ---- Sombras (só em elementos flutuantes) ---- */
+.cs-shadow-menu {
+  box-shadow: 0 8px 24px rgba(11, 18, 32, 0.1);
+}
+.cs-shadow-modal {
+  box-shadow: 0 24px 64px rgba(11, 18, 32, 0.24);
+}
+
+/* ---- Entrada de modal e toast ---- */
+@keyframes cs-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.cs-rise {
+  animation: cs-rise 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cs-rise {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   REGRAS DE INTERACÇÃO
+
+   Skeleton     usar sempre que a espera > 300ms e a forma do conteúdo
+                for previsível. Nunca spinner de página inteira.
+   Spinner      só dentro de botões, durante uma acção do utilizador.
+   Botões       largura fixa entre estados. Desactivar durante submissão
+                para evitar duplo envio (é também protecção contra
+                pedidos repetidos no servidor).
+   Modal        só para decisões destrutivas ou irreversíveis. Fechar com
+                Esc e clique no fundo. Foco preso dentro do modal.
+                Nunca modal sobre modal.
+   Dropdown     fechar com Esc, clique fora e selecção. Navegável por
+                teclado. Item destrutivo separado por divisória.
+   Toast        confirmações não bloqueantes. 4 segundos. Um de cada vez.
+                Nunca para erros que exijam acção — esses ficam no ecrã.
+   Progresso    sempre visível durante um módulo. Texto além da barra
+                ("3 de 4"), nunca só a barra.
+   Movimento    150-200ms. Respeitar prefers-reduced-motion sempre.
+   ============================================================ */
+
+/* ============================================================
+   V2 — MOVIMENTO, ELEVAÇÃO, CAMADAS
+   ============================================================ */
+
+@theme {
+  /* Durações — curtas. Acima de 300ms a interface parece lenta. */
+  --dur-instant: 80ms;
+  --dur-fast: 140ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+
+  /* Curvas */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-overshoot: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* Elevação — duas camadas: contacto + difusão */
+  --shadow-sm:
+    0 1px 2px rgba(11, 18, 32, 0.06), 0 1px 3px rgba(11, 18, 32, 0.04);
+  --shadow-md:
+    0 2px 4px rgba(11, 18, 32, 0.06), 0 8px 20px rgba(11, 18, 32, 0.08);
+  --shadow-lg:
+    0 4px 8px rgba(11, 18, 32, 0.08), 0 24px 48px rgba(11, 18, 32, 0.14);
+  --shadow-focus: 0 0 0 3px rgba(22, 104, 217, 0.28);
+
+  /* Camadas — nunca inventar valores fora desta escala */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-dropdown: 100;
+  --z-overlay: 200;
+  --z-modal: 210;
+  --z-toast: 300;
+}
+
+/* ============================================================
+   ANEL DE FOCO — obrigatório, nunca remover outline sem substituir
+   ============================================================ */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+  border-radius: var(--radius-btn);
+}
+
+/* ============================================================
+   ESQUELETO DE CARREGAMENTO
+   Pulso de opacidade, não gradiente deslizante: menos repintura,
+   melhor desempenho em telemóveis modestos.
+   ============================================================ */
+@keyframes cs-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.skeleton {
+  background: var(--color-ink-100);
+  border-radius: 8px;
+  animation: cs-pulse 1.4s var(--ease-in-out) infinite;
+}
+
+/* ============================================================
+   ENTRADAS E SAÍDAS
+   ============================================================ */
+@keyframes cs-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes cs-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes cs-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes cs-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.anim-overlay {
+  animation: cs-fade-in var(--dur-fast) var(--ease-out);
+}
+.anim-modal {
+  animation: cs-scale-in var(--dur-base) var(--ease-overshoot);
+}
+.anim-dropdown {
+  animation: cs-slide-up var(--dur-fast) var(--ease-out);
+}
+.anim-toast {
+  animation: cs-slide-up var(--dur-base) var(--ease-overshoot);
+}
+.spinner {
+  animation: cs-spin 0.7s linear infinite;
+}
+
+/* ============================================================
+   ACESSIBILIDADE DE MOVIMENTO — não negociável
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   REGRAS DE MOVIMENTO
+   1. Anima opacity e transform. Nunca width, height, top ou left.
+   2. Feedback de toque: scale(.97) em --dur-instant. Só isso.
+   3. Entrada de conteúdo: 200ms. Saída: 140ms. Sair é sempre mais rápido.
+   4. Uma animação por interacção. Duas em simultâneo lê-se como ruído.
+   ============================================================ */
