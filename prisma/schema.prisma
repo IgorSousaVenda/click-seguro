@@ -1,0 +1,267 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+// ============================================================
+// IDENTIDADE E AUTENTICAÇÃO  (estrutura exigida pelo Better Auth)
+// ============================================================
+
+model User {
+  id            String   @id
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+
+  curso         String?
+  anoCurricular Int?
+  role          String   @default("ESTUDANTE") // ESTUDANTE | ADMIN
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sessions   Session[]
+  accounts   Account[]
+  avaliacoes Avaliacao[]
+  progresso  ProgressoLicao[]
+  medalhas   MedalhaUtilizador[]
+  registos   RegistoAuditoria[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  password              String?
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}
+
+// ============================================================
+// CONTEÚDO PEDAGÓGICO
+// ============================================================
+
+model Modulo {
+  id        String @id @default(cuid())
+  slug      String @unique
+  titulo    String
+  descricao String
+  icone     String
+  ordem     Int
+  cor       String @default("brand")
+
+  licoes    Licao[]
+  perguntas Pergunta[]
+  cenarios  CenarioPhishing[]
+
+  @@map("modulo")
+}
+
+model Licao {
+  id              String @id @default(cuid())
+  titulo          String
+  conteudo        String
+  ordem           Int
+  duracaoEstimada Int    @default(3)
+  pontos          Int    @default(10)
+
+  moduloId String
+  modulo   Modulo @relation(fields: [moduloId], references: [id], onDelete: Cascade)
+
+  progresso ProgressoLicao[]
+
+  @@unique([moduloId, ordem])
+  @@map("licao")
+}
+
+model Pergunta {
+  id          String @id @default(cuid())
+  enunciado   String
+  explicacao  String
+  dificuldade String @default("MEDIA")
+  ordem       Int
+
+  moduloId String?
+  modulo   Modulo? @relation(fields: [moduloId], references: [id], onDelete: SetNull)
+
+  opcoes    Opcao[]
+  respostas RespostaAvaliacao[]
+
+  @@map("pergunta")
+}
+
+model Opcao {
+  id      String  @id @default(cuid())
+  texto   String
+  correta Boolean @default(false)
+  ordem   Int
+
+  perguntaId String
+  pergunta   Pergunta @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+
+  respostas RespostaAvaliacao[]
+
+  @@map("opcao")
+}
+
+model CenarioPhishing {
+  id          String  @id @default(cuid())
+  canal       String
+  remetente   String
+  assunto     String?
+  corpo       String
+  ehPhishing  Boolean
+  indicadores String
+  explicacao  String
+  ordem       Int
+
+  moduloId String?
+  modulo   Modulo? @relation(fields: [moduloId], references: [id], onDelete: SetNull)
+
+  @@map("cenario_phishing")
+}
+
+// ============================================================
+// AVALIAÇÃO — sustenta a comparação pré/pós-teste (H1)
+// ============================================================
+
+model Avaliacao {
+  id          String    @id @default(cuid())
+  tipo        String
+  pontuacao   Int?
+  total       Int?
+  iniciadaEm  DateTime  @default(now())
+  concluidaEm DateTime?
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  respostas RespostaAvaliacao[]
+
+  @@index([userId, tipo])
+  @@map("avaliacao")
+}
+
+model RespostaAvaliacao {
+  id            String  @id @default(cuid())
+  correta       Boolean
+  tempoResposta Int?
+
+  avaliacaoId String
+  avaliacao   Avaliacao @relation(fields: [avaliacaoId], references: [id], onDelete: Cascade)
+
+  perguntaId String
+  pergunta   Pergunta @relation(fields: [perguntaId], references: [id], onDelete: Cascade)
+
+  opcaoId String?
+  opcao   Opcao?  @relation(fields: [opcaoId], references: [id], onDelete: SetNull)
+
+  @@unique([avaliacaoId, perguntaId])
+  @@map("resposta_avaliacao")
+}
+
+// ============================================================
+// PROGRESSO E GAMIFICAÇÃO
+// ============================================================
+
+model ProgressoLicao {
+  id          String   @id @default(cuid())
+  pontos      Int      @default(0)
+  concluidaEm DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  licaoId String
+  licao   Licao  @relation(fields: [licaoId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, licaoId])
+  @@map("progresso_licao")
+}
+
+model Medalha {
+  id        String @id @default(cuid())
+  codigo    String @unique
+  nome      String
+  descricao String
+  icone     String
+  criterio  String
+
+  atribuicoes MedalhaUtilizador[]
+
+  @@map("medalha")
+}
+
+model MedalhaUtilizador {
+  id       String   @id @default(cuid())
+  obtidaEm DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  medalhaId String
+  medalha   Medalha @relation(fields: [medalhaId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, medalhaId])
+  @@map("medalha_utilizador")
+}
+
+// ============================================================
+// AUDITORIA — evidência para o Cap. 4.1.5.10
+// ============================================================
+
+model RegistoAuditoria {
+  id        String   @id @default(cuid())
+  evento    String
+  ipAddress String?
+  userAgent String?
+  criadoEm  DateTime @default(now())
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, criadoEm])
+  @@map("registo_auditoria")
+}
