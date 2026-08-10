@@ -54,8 +54,8 @@ export default function PaginaLogin() {
           e.preventDefault();
           handleSubmit(aoSubmeter)(e);
         }}
-        className="space-y-5"
         noValidate
+        className="space-y-5"
       >
         <Campo
           rotulo="E-mail"
