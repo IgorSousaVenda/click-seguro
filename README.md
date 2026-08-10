@@ -134,3 +134,8 @@ Reinicia o servidor.
   arrays nativos
 - Análise longitudinal do comportamento dos utilizadores fica para
   trabalhos futuros
+
+  ## Como contribuir
+
+O fluxo de trabalho, convenções de commits e regras do produto estão
+documentados em [CONTRIBUTING.md](./CONTRIBUTING.md).
