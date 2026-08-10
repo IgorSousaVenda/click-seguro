@@ -20,7 +20,12 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-AO" className={inter.variable}>
-      <body className="antialiased bg-ink-50 text-ink-900" suppressHydrationWarning>
+      <body
+        className="antialiased bg-ink-50 text-ink-900"
+        suppressHydrationWarning
+      >
+        {children}
+      </body>
     </html>
   );
 }

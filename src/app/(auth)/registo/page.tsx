@@ -39,7 +39,7 @@ export default function PaginaRegisto() {
     });
 
     if (error) {
-      console.error("Erro do Better Auth:", error);
+      console.error("Erro do Better Auth:", JSON.stringify(error, null, 2));
       setErroServidor(
         error.message?.includes("exist")
           ? "Já existe uma conta com este e-mail."
