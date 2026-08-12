@@ -93,6 +93,9 @@ export function ConversaSimulacao({
   const atendida = caminho.includes("atendeu");
 
   useEffect(() => {
+    // O relogio so pode ser lido no navegador: le-lo no servidor produziria
+    // uma hora diferente e quebraria a hidratacao.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- leitura inicial de um sistema externo
     setHora(relogio());
     const id = setInterval(() => setHora(relogio()), 30000);
     return () => clearInterval(id);

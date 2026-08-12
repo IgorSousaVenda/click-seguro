@@ -20,6 +20,8 @@ const CURSOS = [
 export default function PaginaRegisto() {
   const router = useRouter();
   const [erroServidor, setErroServidor] = useState<string | null>(null);
+  const [consentiu, setConsentiu] = useState(false);
+  const [erroConsentimento, setErroConsentimento] = useState(false);
 
   const {
     register,
@@ -31,6 +33,11 @@ export default function PaginaRegisto() {
 
   async function aoSubmeter(dados: z.output<typeof esquemaRegisto>) {
     setErroServidor(null);
+
+    if (!consentiu) {
+      setErroConsentimento(true);
+      return;
+    }
 
     const { error } = await signUp.email({
       name: dados.nome,
@@ -151,6 +158,43 @@ export default function PaginaRegisto() {
             </p>
           </div>
         )}
+
+        <div
+          className={`rounded-btn border p-4 transition-colors ${
+            erroConsentimento
+              ? "border-danger bg-danger-bg"
+              : "border-ink-100 bg-white"
+          }`}
+        >
+          <label className="flex cursor-pointer items-start gap-3">
+            <input
+              type="checkbox"
+              checked={consentiu}
+              onChange={(e) => {
+                setConsentiu(e.target.checked);
+                if (e.target.checked) setErroConsentimento(false);
+              }}
+              className="mt-0.5 h-[18px] w-[18px] shrink-0 cursor-pointer accent-brand-500"
+            />
+            <span className="text-[13px] leading-relaxed text-ink-600">
+              Aceito que sejam recolhidos o meu nome, e-mail, curso, ano
+              curricular e os meus resultados nas actividades. Estes dados
+              destinam-se exclusivamente ao estudo académico que dá origem a
+              esta aplicação, no âmbito do Trabalho de Conclusão de Curso no
+              ISAF. Não são partilhados com terceiros nem usados para outro fim,
+              e os resultados apresentados no relatório final são agregados e
+              anónimos. Posso pedir a eliminação da minha conta e de todos os
+              dados associados a qualquer momento, escrevendo para
+              igordesousavenda@gmail.com.
+            </span>
+          </label>
+
+          {erroConsentimento && (
+            <p className="mt-3 pl-[30px] text-[13px] font-medium text-danger">
+              É necessário aceitar para criar conta.
+            </p>
+          )}
+        </div>
 
         <Botao type="submit" carregando={isSubmitting} className="w-full h-12">
           {isSubmitting ? "A criar conta" : "Criar conta"}
