@@ -5,20 +5,21 @@ generator client {
 datasource db {
   provider = "sqlite"
 }
+
 // ============================================================
 // IDENTIDADE E AUTENTICAÇÃO  (estrutura exigida pelo Better Auth)
 // ============================================================
 
 model User {
-  id            String   @id
+  id            String  @id
   name          String
-  email         String   @unique
-  emailVerified Boolean  @default(false)
+  email         String  @unique
+  emailVerified Boolean @default(false)
   image         String?
 
   curso         String?
   anoCurricular Int?
-  role          String   @default("ESTUDANTE") // ESTUDANTE | ADMIN
+  role          String  @default("ESTUDANTE") // ESTUDANTE | ADMIN
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -29,6 +30,7 @@ model User {
   progresso  ProgressoLicao[]
   medalhas   MedalhaUtilizador[]
   registos   RegistoAuditoria[]
+  tentativas TentativaQuiz[]
 
   @@map("user")
 }
@@ -110,7 +112,9 @@ model Licao {
   moduloId String
   modulo   Modulo @relation(fields: [moduloId], references: [id], onDelete: Cascade)
 
-  progresso ProgressoLicao[]
+  progresso  ProgressoLicao[]
+  perguntas  Pergunta[]
+  tentativas TentativaQuiz[]
 
   @@unique([moduloId, ordem])
   @@map("licao")
@@ -125,6 +129,9 @@ model Pergunta {
 
   moduloId String?
   modulo   Modulo? @relation(fields: [moduloId], references: [id], onDelete: SetNull)
+
+  licaoId String?
+  licao   Licao?  @relation(fields: [licaoId], references: [id], onDelete: Cascade)
 
   opcoes    Opcao[]
   respostas RespostaAvaliacao[]
@@ -264,4 +271,25 @@ model RegistoAuditoria {
 
   @@index([userId, criadoEm])
   @@map("registo_auditoria")
+}
+
+// ============================================================
+// TENTATIVAS DE QUIZ — sustentam a regra de progressão (70%)
+// ============================================================
+
+model TentativaQuiz {
+  id          String   @id @default(cuid())
+  pontuacao   Int
+  total       Int
+  aprovada    Boolean
+  realizadaEm DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  licaoId String
+  licao   Licao  @relation(fields: [licaoId], references: [id], onDelete: Cascade)
+
+  @@index([userId, licaoId])
+  @@map("tentativa_quiz")
 }
