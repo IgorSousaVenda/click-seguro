@@ -47,7 +47,7 @@ export default async function Resultado({
         </p>
         <p className="mt-2 text-ink-600">{percentagem}% de respostas certas</p>
         <p className="mx-auto mt-5 max-w-md text-sm leading-relaxed text-ink-600">
-          Esta pontuação não é uma nota. Serve como ponto de partida — no fim do
+          Esta pontuação não é uma nota. Serve como ponto de partida! no fim do
           percurso repetes a avaliação e comparas os dois resultados.
         </p>
       </div>
@@ -88,7 +88,7 @@ export default async function Resultado({
                   >
                     {resposta.correta ? "Certo" : "Errado"}
                   </span>
-                  {" — respondeste: "}
+                  {". respondeste: "}
                   {resposta.opcao?.texto}
                 </p>
 

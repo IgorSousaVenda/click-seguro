@@ -26,11 +26,11 @@ export default async function Diagnostico() {
   }
 
   const perguntas = await prisma.pergunta.findMany({
+    where: { licaoId: null },
     orderBy: { ordem: "asc" },
     select: {
       id: true,
       enunciado: true,
-      // "correta" não é enviado ao cliente.
       opcoes: {
         orderBy: { ordem: "asc" },
         select: { id: true, texto: true },

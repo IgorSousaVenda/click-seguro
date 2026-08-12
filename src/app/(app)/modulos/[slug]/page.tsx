@@ -4,6 +4,8 @@ import { prisma } from "@/lib/db";
 import { obterSessao } from "@/lib/sessao";
 import { AcordeaoLicoes } from "@/components/acordeao-licoes";
 import { obterPerguntasDaTentativa } from "@/lib/acoes/quiz";
+import { redirect } from "next/navigation";
+import { obterAcesso } from "@/lib/acesso";
 
 export default async function Modulo({
   params,
@@ -37,6 +39,11 @@ export default async function Modulo({
   });
 
   if (!modulo) notFound();
+
+  const acesso = await obterAcesso(userId);
+  if (!acesso.fezDiagnostico || modulo.ordem > acesso.alcancado) {
+    redirect("/inicio");
+  }
 
   const concluidas = await prisma.progressoLicao.findMany({
     where: { userId, licaoId: { in: modulo.licoes.map((l) => l.id) } },

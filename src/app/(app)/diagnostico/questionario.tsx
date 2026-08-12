@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { ChevronLeft } from "lucide-react";
 import { submeterAvaliacao } from "@/lib/acoes/avaliacao";
+import { TextoRico } from "@/components/texto-rico";
 
 type Pergunta = {
   id: string;
@@ -81,7 +82,7 @@ export function Questionario({
       </div>
 
       <h1 className="text-xl font-semibold leading-snug text-ink-900">
-        {pergunta.enunciado}
+        <TextoRico>{pergunta.enunciado}</TextoRico>
       </h1>
 
       <div className="mt-6 space-y-3">
