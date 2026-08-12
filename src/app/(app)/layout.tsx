@@ -41,6 +41,12 @@ export default async function LayoutApp({
               >
                 Simulações
               </Link>
+              <Link
+                href="/progresso"
+                className="text-ink-600 transition-colors hover:text-ink-900"
+              >
+                Progresso
+              </Link>
             </nav>
           </div>
 

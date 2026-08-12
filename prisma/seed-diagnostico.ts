@@ -29,35 +29,36 @@ const perguntas = [
     ordem: 2,
     dificuldade: "DIFICIL",
     enunciado:
-      "Um site tem cadeado, certificado válido e o endereço escrito com caracteres que parecem normais, mas alguns são de outro alfabeto. Como se chama esta técnica?",
+      "Chegaste por um link de SMS a uma página com cadeado, certificado válido e um endereço que parece o do teu banco. O que é que o cadeado garante?",
     opcoes: [
-      { texto: "Ataque de força bruta" },
-      { texto: "Manipulação de links, ou ataque homográfico", correta: true },
-      { texto: "Injecção de código" },
-      { texto: "Negação de serviço" },
+      { texto: "Que a página pertence mesmo ao banco" },
+      {
+        texto:
+          "Que a ligação vai cifrada, e nada mais sobre quem criou a página",
+        correta: true,
+      },
+      { texto: "Que o site foi verificado por uma autoridade bancária" },
+      { texto: "Que os dados que introduzires não podem ser roubados" },
     ],
     explicacao:
-      "A manipulação de links explora a semelhança visual entre caracteres de alfabetos diferentes para registar domínios que parecem idênticos aos legítimos. O certificado é genuíno, porque o domínio foi mesmo registado por quem ataca. É um bom exemplo de que o cadeado nada diz sobre a identidade de quem está do outro lado.",
+      "O cadeado diz que a ligação vai cifrada, ou seja, que ninguém a intercepta pelo caminho. Não diz nada sobre quem está do outro lado. Obter um certificado é gratuito e rápido, e quem monta uma página falsa obtém um também. Se o endereço foi registado por quem ataca, os teus dados chegam cifrados ao destino errado.",
   },
   {
     ordem: 3,
     dificuldade: "DIFICIL",
     enunciado:
-      "Qual destas situações descreve whaling e não spear phishing comum?",
+      "Um email trata-te pelo nome, indica o teu número de estudante correcto e vem assinado pelo teu orientador, a pedir que envies o trabalho para um Gmail pessoal porque a caixa institucional está cheia. O que deve levantar suspeita?",
     opcoes: [
+      { texto: "O facto de conhecerem o teu número de estudante" },
       {
-        texto:
-          "Uma mensagem dirigida a um estudante, usando o nome do curso dele",
-      },
-      {
-        texto: "Uma mensagem dirigida ao director financeiro de uma empresa",
+        texto: "O pedido para sair do canal institucional",
         correta: true,
       },
-      { texto: "Uma mensagem enviada a milhares de contactos ao mesmo tempo" },
-      { texto: "Uma chamada telefónica em nome do banco" },
+      { texto: "O email ter chegado fora do horário de expediente" },
+      { texto: "Nada, uma vez que todos os dados conferem" },
     ],
     explicacao:
-      "Whaling é phishing dirigido a pessoas em cargos de topo, e o nome vem da dimensão do alvo. O impacto é muito maior porque essas pessoas têm acesso às informações mais sensíveis da organização e autoridade para aprovar operações. Spear phishing é dirigido, mas a qualquer pessoa; whaling é dirigido ao topo da hierarquia.",
+      "Dados correctos não provam nada: um número de estudante circula em listas de turma, em trabalhos de grupo e em papéis afixados. O sinal está no que a mensagem pede. Uma instituição não trata assuntos oficiais por um endereço pessoal, e a justificação apressada existe para que aceites a excepção sem pensar. Confirma sempre pelo canal habitual, mesmo quando tudo parece encaixar.",
   },
   {
     ordem: 4,
