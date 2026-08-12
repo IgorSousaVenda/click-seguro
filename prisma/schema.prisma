@@ -31,6 +31,7 @@ model User {
   medalhas   MedalhaUtilizador[]
   registos   RegistoAuditoria[]
   tentativas TentativaQuiz[]
+  simulacoes TentativaSimulacao[]
 
   @@map("user")
 }
@@ -292,4 +293,70 @@ model TentativaQuiz {
 
   @@index([userId, licaoId])
   @@map("tentativa_quiz")
+}
+
+// ============================================================
+// SIMULAÇÕES — conversas ramificadas em tempo real
+// ============================================================
+
+model Simulacao {
+  id           String  @id @default(cuid())
+  slug         String  @unique
+  titulo       String
+  canal        String // SMS | EMAIL | CHAMADA | WHATSAPP
+  remetente    String
+  contexto     String // enquadramento mostrado antes de começar
+  ehFraude     Boolean // algumas são legítimas, para exigir discernimento
+  licao        String // o que fica claro no fim, seja qual for o desfecho
+  ordem        Int
+  moduloMinimo Int     @default(1) // módulos concluídos necessários
+
+  nos        NoSimulacao[]
+  tentativas TentativaSimulacao[]
+
+  @@map("simulacao")
+}
+
+model NoSimulacao {
+  id        String  @id @default(cuid())
+  chave     String // identificador legível, ex: "inicio", "deu-codigo"
+  mensagens String // mensagens recebidas neste nó, em JSON
+  desfecho  String? // SEGURO | COMPROMETIDO | PARCIAL; nulo se a conversa continua
+  desenlace String? // texto mostrado quando há desfecho
+
+  simulacaoId String
+  simulacao   Simulacao @relation(fields: [simulacaoId], references: [id], onDelete: Cascade)
+
+  escolhas EscolhaSimulacao[]
+
+  @@unique([simulacaoId, chave])
+  @@map("no_simulacao")
+}
+
+model EscolhaSimulacao {
+  id      String @id @default(cuid())
+  texto   String
+  proximo String // chave do nó seguinte
+  ordem   Int
+
+  noId String
+  no   NoSimulacao @relation(fields: [noId], references: [id], onDelete: Cascade)
+
+  @@map("escolha_simulacao")
+}
+
+model TentativaSimulacao {
+  id          String   @id @default(cuid())
+  desfecho    String
+  caminho     String // sequência de nós percorridos, em JSON
+  realizadaEm DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  simulacaoId String
+  simulacao   Simulacao @relation(fields: [simulacaoId], references: [id], onDelete: Cascade)
+
+  @@index([userId, simulacaoId])
+  @@map("tentativa_simulacao")
 }

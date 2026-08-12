@@ -298,3 +298,13 @@
    3. Entrada de conteúdo: 200ms. Saída: 140ms. Sair é sempre mais rápido.
    4. Uma animação por interacção. Duas em simultâneo lê-se como ruído.
    ============================================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
