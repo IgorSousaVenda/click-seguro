@@ -99,7 +99,7 @@ export default function Onboarding() {
         </h1>
         <p className="cs-sub">
           Click Seguro treina a tua capacidade de decisão em situações reais de
-          engenharia social em menos de três minutos por dia.
+          engenharia social — em menos de três minutos por dia.
         </p>
         <div className="cs-hero-ctas">
           <Link href="/registo" className="cs-btn-primary">
@@ -176,11 +176,7 @@ export default function Onboarding() {
           font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
           color: var(--cream);
           background: var(--navy);
-         .cs-root {
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+          min-height: 100svh;
           position: relative;
           overflow-x: hidden;
         }
@@ -290,7 +286,7 @@ export default function Onboarding() {
         .cs-hero {
           position: relative;
           z-index: 5;
-          min-height: calc(100svh - 60px);
+          min-height: 88svh;
           display: flex;
           flex-direction: column;
           justify-content: center;

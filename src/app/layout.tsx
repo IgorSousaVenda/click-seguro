@@ -19,11 +19,49 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // O atributo abaixo existe porque alguns navegadores móveis injectam
-    // atributos no elemento html antes do React arrancar. Aplica-se apenas
-    // a este elemento e não afecta a verificação do conteúdo da aplicação.
-    <html lang="pt-AO" className={inter.variable} suppressHydrationWarning>
-      <body className="antialiased bg-ink-50 text-ink-900">{children}</body>
+    <html
+      lang="pt-AO"
+      className={inter.variable}
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+    >
+      <body className="antialiased">
+        {/* Vídeo de fundo global */}
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: "none",
+          }}
+          aria-hidden="true"
+        >
+          <video
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
+            src="/Animacaosite.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              background:
+                "linear-gradient(to bottom, rgba(30,41,59,.80) 0%, rgba(30,41,59,.65) 50%, rgba(30,41,59,.85) 100%)",
+            }}
+          />
+        </div>
+
+        {/* Conteúdo da aplicação */}
+        <div style={{ position: "relative", zIndex: 1 }}>{children}</div>
+      </body>
     </html>
   );
 }
