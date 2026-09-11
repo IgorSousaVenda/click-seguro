@@ -205,28 +205,28 @@ export function ConversaSimulacao({
       <div className="mx-auto max-w-md">
         <Link
           href="/simulacoes"
-          className="text-sm text-ink-600 hover:text-ink-900"
+          className="text-sm text-texto-suave hover:text-texto"
         >
           ← Simulações
         </Link>
 
-        <div className="mt-6 rounded-xl border border-ink-200 bg-white p-8 text-center">
-          <h1 className="text-xl font-semibold text-ink-900">
+        <div className="mt-6 rounded-cartao border border-contorno bg-superficie-2 p-8 text-center">
+          <h1 className="text-xl font-semibold text-texto">
             {simulacao.titulo}
           </h1>
 
-          <p className="mx-auto mt-3 max-w-sm text-justify text-sm leading-relaxed text-ink-600">
+          <p className="mx-auto mt-3 max-w-sm text-justify text-sm leading-relaxed text-texto-suave">
             {simulacao.contexto}
           </p>
 
-          <p className="mt-6 text-sm text-ink-500">
+          <p className="mt-6 text-sm text-texto-tenue">
             Isto acontece em tempo real. Decide como decidirias na vida.
           </p>
 
           <button
             type="button"
             onClick={() => setComecou(true)}
-            className="mt-5 rounded-lg bg-[#1668D9] px-7 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            className="mt-5 rounded-campo bg-acento px-7 py-3 text-sm font-medium text-acento-contraste transition-colors hover:bg-acento-forte"
           >
             Começar
           </button>
@@ -241,20 +241,20 @@ export function ConversaSimulacao({
   const corDesfecho =
     no?.desfecho === "SEGURO"
       ? {
-          borda: "border-[#17864F]/30",
-          fundo: "bg-[#17864F]/5",
-          texto: "text-[#17864F]",
+          borda: "border-sucesso/35",
+          fundo: "bg-sucesso/10",
+          texto: "text-sucesso",
         }
       : no?.desfecho === "COMPROMETIDO"
         ? {
-            borda: "border-[#C4302B]/30",
-            fundo: "bg-[#C4302B]/5",
-            texto: "text-[#C4302B]",
+            borda: "border-perigo/35",
+            fundo: "bg-perigo/10",
+            texto: "text-perigo",
           }
         : {
-            borda: "border-ink-300",
-            fundo: "bg-ink-50",
-            texto: "text-ink-700",
+            borda: "border-contorno-forte",
+            fundo: "bg-superficie-2",
+            texto: "text-texto/80",
           };
 
   return (
@@ -565,7 +565,7 @@ export function ConversaSimulacao({
           <button
             type="button"
             onClick={() => setSaltar(true)}
-            className="inline-flex items-center gap-1.5 text-xs text-ink-500 hover:text-ink-800"
+            className="inline-flex items-center gap-1.5 text-xs text-texto-tenue hover:text-texto"
           >
             <ChevronsRight size={13} aria-hidden="true" />
             Mostrar tudo
@@ -575,7 +575,7 @@ export function ConversaSimulacao({
 
       {terminou && no && (
         <div
-          className={`mt-5 rounded-xl border p-6 ${corDesfecho.borda} ${corDesfecho.fundo}`}
+          className={`mt-5 rounded-cartao border p-6 ${corDesfecho.borda} ${corDesfecho.fundo}`}
         >
           <p
             className={`flex items-center gap-2 font-medium ${corDesfecho.texto}`}
@@ -594,11 +594,11 @@ export function ConversaSimulacao({
                 : "Escapaste por pouco"}
           </p>
 
-          <p className="mt-3 text-justify text-sm leading-relaxed text-ink-700">
+          <p className="mt-3 text-justify text-sm leading-relaxed text-texto/80">
             {no.desenlace}
           </p>
 
-          <p className="mt-4 border-l-2 border-ink-300 pl-3 text-justify text-sm leading-relaxed text-ink-800">
+          <p className="mt-4 border-l-2 border-contorno-forte pl-3 text-justify text-sm leading-relaxed text-texto">
             {simulacao.licao}
           </p>
 
@@ -606,13 +606,13 @@ export function ConversaSimulacao({
             <button
               type="button"
               onClick={recomecar}
-              className="rounded-lg border border-ink-300 bg-white px-5 py-2.5 text-sm font-medium text-ink-800 transition-colors hover:border-ink-400"
+              className="rounded-campo border border-contorno-forte bg-superficie-2 px-5 py-2.5 text-sm font-medium text-texto transition-colors hover:border-acento/50"
             >
               Tentar outro caminho
             </button>
             <Link
               href="/simulacoes"
-              className="inline-flex items-center gap-2 rounded-lg bg-[#1668D9] px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-campo bg-acento px-5 py-2.5 text-sm font-medium text-acento-contraste transition-colors hover:bg-acento-forte"
             >
               <ArrowLeft size={14} aria-hidden="true" />
               Voltar às simulações

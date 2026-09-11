@@ -1,0 +1,56 @@
+services:
+  click-seguro:
+    build: .
+    image: click-seguro:latest
+    container_name: click-seguro
+    restart: unless-stopped
+
+    environment:
+      # O domínio público. O Better Auth valida a origem dos pedidos
+      # contra este valor: se estiver errado, o login devolve 403.
+      BETTER_AUTH_URL: https://${DOMINIO}
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      CAMINHO_BD: /dados/click-seguro.db
+
+      # Envio dos códigos de verificação. Sem utilizador e palavra-passe,
+      # o código sai nos registos do contentor em vez de por e-mail, e o
+      # fluxo continua a funcionar de ponta a ponta.
+      SMTP_HOST: ${SMTP_HOST:-smtp.gmail.com}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURE: ${SMTP_SECURE:-false}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-Click Seguro <nao-responder@click.tsiangana.me>}
+
+    volumes:
+      - dados-click-seguro:/dados
+
+    networks:
+      - traefik
+
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: traefik
+
+      # Encaminhamento HTTPS
+      traefik.http.routers.click-seguro.rule: Host(`${DOMINIO}`)
+      traefik.http.routers.click-seguro.entrypoints: websecure
+      traefik.http.routers.click-seguro.tls: "true"
+      traefik.http.routers.click-seguro.tls.certresolver: ${RESOLVEDOR_TLS:-letsencrypt}
+      traefik.http.services.click-seguro.loadbalancer.server.port: "3000"
+
+      # Cabeçalhos de segurança aplicados a todas as respostas
+      traefik.http.routers.click-seguro.middlewares: click-seguro-seguranca
+      traefik.http.middlewares.click-seguro-seguranca.headers.stsSeconds: "31536000"
+      traefik.http.middlewares.click-seguro-seguranca.headers.stsIncludeSubdomains: "true"
+      traefik.http.middlewares.click-seguro-seguranca.headers.contentTypeNosniff: "true"
+      traefik.http.middlewares.click-seguro-seguranca.headers.browserXssFilter: "true"
+      traefik.http.middlewares.click-seguro-seguranca.headers.referrerPolicy: strict-origin-when-cross-origin
+      traefik.http.middlewares.click-seguro-seguranca.headers.frameDeny: "true"
+
+volumes:
+  dados-click-seguro:
+
+networks:
+  traefik:
+    external: true

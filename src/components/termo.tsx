@@ -35,7 +35,7 @@ export function Termo({ children }: { children: string }) {
         type="button"
         onClick={() => setAberto(!aberto)}
         aria-expanded={aberto}
-        className="cursor-help font-medium text-[#1668D9] underline decoration-dotted underline-offset-2"
+        className="cursor-help font-medium text-acento underline decoration-dotted underline-offset-2"
       >
         {children}
       </button>
@@ -43,9 +43,9 @@ export function Termo({ children }: { children: string }) {
       {aberto && (
         <span
           role="tooltip"
-          className="absolute bottom-full left-1/2 z-50 mb-2 w-64 -translate-x-1/2 rounded-lg border border-ink-200 bg-white p-3 text-sm font-normal leading-snug text-ink-700 shadow-lg"
+          className="absolute bottom-full left-1/2 z-50 mb-2 w-64 -translate-x-1/2 rounded-campo border border-contorno bg-superficie-2 p-3 text-sm font-normal leading-snug text-texto/80 shadow-lg"
         >
-          <span className="mb-1 block font-semibold text-ink-900">
+          <span className="mb-1 block font-semibold text-texto">
             {children}
           </span>
           {definicao}

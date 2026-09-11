@@ -1,49 +1,46 @@
 @import "tailwindcss";
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-:root {
-  --navy: #1e293b;
-  --slate: #334155;
-  --sage: #5c6b66;
-  --muted: #8a7d7b;
-  --blush: #c8a99d;
-  --cream: #f2e6d6;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-body {
-  background: var(--navy);
-  color: var(--cream);
-  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
-  margin: 0;
-  min-height: 100svh;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
+/* ============================================================
+   Sistema de design — fonte única de verdade
+   Qualquer cor, raio ou sombra usada na aplicação sai daqui.
+   ============================================================ */
 
 @theme {
+  /* Superfícies, do fundo para a frente */
+  --color-fundo: #131c2b;
+  --color-superficie: #1e293b;
+  --color-superficie-2: #263449;
+  --color-superficie-3: #334155;
+
+  /* Texto */
+  --color-texto: #f2e6d6;
+  --color-texto-suave: #c3bdb4;
+  --color-texto-tenue: #8e9099;
+
+  /* Contornos */
+  --color-contorno: #3a4759;
+  --color-contorno-forte: #4d5b6e;
+
+  /* Acento da marca */
+  --color-acento: #c8a99d;
+  --color-acento-forte: #d9bfb4;
+  --color-acento-tenue: #6b5750;
+  --color-acento-contraste: #1e293b;
+
+  /* Verde-sálvia da identidade, usado nos gradientes de fundo */
+  --color-salva: #5c6b66;
+
+  /* Estados */
+  --color-sucesso: #4ade80;
+  --color-sucesso-tenue: #14532d;
+  --color-perigo: #fca5a5;
+  --color-perigo-tenue: #5c1f1f;
+  --color-aviso: #fcd34d;
+  --color-aviso-tenue: #573f0d;
+  --color-info: #7dd3fc;
+  --color-info-tenue: #103c53;
+
+  /* Escala neutra, mantida para componentes ainda por migrar */
   --color-ink-50: #f8f9fa;
   --color-ink-100: #f1f3f5;
   --color-ink-200: #e9ecef;
@@ -55,33 +52,22 @@ body {
   --color-ink-800: #343a40;
   --color-ink-900: #212529;
 
-  --color-cs-navy: #1e293b;
-  --color-cs-slate: #334155;
-  --color-cs-sage: #5c6b66;
-  --color-cs-muted: #8a7d7b;
-  --color-cs-blush: #c8a99d;
-  --color-cs-cream: #f2e6d6;
+  /* Forma */
+  --radius-campo: 0.75rem;
+  --radius-cartao: 1rem;
+  --radius-painel: 1.25rem;
+
+  /* Profundidade */
+  --shadow-cartao: 0 1px 2px rgb(0 0 0 / 0.24), 0 8px 24px rgb(0 0 0 / 0.18);
+  --shadow-painel: 0 8px 40px rgb(0 0 0 / 0.28);
+
+  /* Tipografia */
+  --font-sans: var(--font-inter), "Segoe UI", system-ui, sans-serif;
 }
 
-:root {
-  --navy: #1e293b;
-  --slate: #334155;
-  --sage: #5c6b66;
-  --muted: #8a7d7b;
-  --blush: #c8a99d;
-  --cream: #f2e6d6;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
+/* ============================================================
+   Base
+   ============================================================ */
 
 *,
 *::before,
@@ -94,14 +80,34 @@ html {
 }
 
 body {
-  background: var(--navy);
-  color: var(--cream);
-  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  background: var(--color-fundo);
+  color: var(--color-texto);
+  font-family: var(--font-sans);
   margin: 0;
   min-height: 100svh;
 }
 
+/* Foco visível e consistente em tudo o que é interativo */
+:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {

@@ -32,3 +32,20 @@ export const esquemaLogin = z.object({
 
 export type DadosRegisto = z.infer<typeof esquemaRegisto>;
 export type DadosLogin = z.infer<typeof esquemaLogin>;
+
+// O formulário entrega strings; o esquema converte o ano para número.
+// Os dois tipos são precisos porque o React Hook Form valida à entrada
+// e o manipulador de submissão recebe já a saída convertida.
+export type EntradaRegisto = z.input<typeof esquemaRegisto>;
+export type SaidaRegisto = z.output<typeof esquemaRegisto>;
+
+// Reutilizada na reposição de palavra-passe, que não passa pelo
+// formulário de registo mas exige a mesma robustez.
+export const esquemaNovaPalavraPasse = z.object({
+  password: z
+    .string()
+    .min(10, "A palavra-passe deve ter pelo menos 10 caracteres")
+    .regex(/[a-z]/, "Deve conter pelo menos uma letra minúscula")
+    .regex(/[A-Z]/, "Deve conter pelo menos uma letra maiúscula")
+    .regex(/[0-9]/, "Deve conter pelo menos um número"),
+});

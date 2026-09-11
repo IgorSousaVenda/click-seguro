@@ -1,11 +1,4 @@
-import path from "node:path";
-import { PrismaClient } from "@prisma/client";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
-
-const adapter = new PrismaLibSql({
-  url: `file:${path.join(process.cwd(), "dev.db")}`,
-});
-const prisma = new PrismaClient({ adapter });
+import { prisma } from "./cliente-semente";
 
 type OpcaoSemente = { texto: string; correta?: boolean };
 type PerguntaSemente = {

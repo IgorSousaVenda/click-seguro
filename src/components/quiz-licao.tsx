@@ -73,10 +73,10 @@ export function QuizLicao({
         return (
           <div
             key={pergunta.id}
-            className="rounded-xl border border-ink-200 bg-white p-5"
+            className="rounded-cartao border border-contorno bg-superficie-2 p-5"
           >
-            <p className="text-[15px] font-medium leading-snug text-ink-900">
-              <span className="text-ink-400">{i + 1}.</span>{" "}
+            <p className="text-[15px] font-medium leading-snug text-texto">
+              <span className="text-texto-tenue">{i + 1}.</span>{" "}
               <TextoRico>{pergunta.enunciado}</TextoRico>
             </p>
 
@@ -85,15 +85,15 @@ export function QuizLicao({
                 const escolhida = respostas[pergunta.id] === opcao.id;
                 const acertou = correcao?.correta === true;
 
-                let estilo = "border-ink-200 bg-white text-ink-700";
+                let estilo = "border-contorno bg-superficie-2 text-texto/80";
                 if (resultado) {
                   if (escolhida && acertou)
-                    estilo = "border-[#17864F] bg-[#17864F]/5 text-ink-900";
+                    estilo = "border-sucesso bg-sucesso/10 text-texto";
                   else if (escolhida)
-                    estilo = "border-[#C4302B] bg-[#C4302B]/5 text-ink-900";
-                  else estilo = "border-ink-200 bg-white text-ink-500";
+                    estilo = "border-perigo bg-perigo/10 text-texto";
+                  else estilo = "border-contorno bg-superficie-2 text-texto-tenue";
                 } else if (escolhida) {
-                  estilo = "border-[#1668D9] bg-[#1668D9]/5 text-ink-900";
+                  estilo = "border-acento bg-acento/8 text-texto";
                 }
 
                 return (
@@ -105,20 +105,20 @@ export function QuizLicao({
                       setRespostas((a) => ({ ...a, [pergunta.id]: opcao.id }))
                     }
                     aria-pressed={escolhida}
-                    className={`flex w-full items-start gap-3 rounded-lg border p-3.5 text-left text-sm leading-snug transition-colors ${estilo}`}
+                    className={`flex w-full items-start gap-3 rounded-campo border p-3.5 text-left text-sm leading-snug transition-colors ${estilo}`}
                   >
                     <span className="mt-0.5 w-4 shrink-0">
                       {resultado && escolhida && acertou && (
                         <Check
                           size={15}
-                          className="text-[#17864F]"
+                          className="text-sucesso"
                           aria-label="Certo"
                         />
                       )}
                       {resultado && escolhida && !acertou && (
                         <X
                           size={15}
-                          className="text-[#C4302B]"
+                          className="text-perigo"
                           aria-label="Errado"
                         />
                       )}
@@ -130,7 +130,7 @@ export function QuizLicao({
             </div>
 
             {correcao && (
-              <p className="mt-4 border-l-2 border-ink-200 pl-3 text-justify text-sm leading-relaxed text-ink-700">
+              <p className="mt-4 border-l-2 border-contorno pl-3 text-justify text-sm leading-relaxed text-texto/80">
                 <TextoRico>{correcao.explicacao}</TextoRico>
               </p>
             )}
@@ -143,23 +143,23 @@ export function QuizLicao({
           type="button"
           onClick={submeter}
           disabled={!todasRespondidas || pendente}
-          className="w-full rounded-lg bg-[#1668D9] px-6 py-3 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+          className="w-full rounded-campo bg-acento px-6 py-3 text-sm font-medium text-acento-contraste transition-colors hover:bg-acento-forte disabled:opacity-40"
         >
           {pendente ? "A verificar…" : "Verificar respostas"}
         </button>
       ) : (
         <div
-          className={`rounded-xl border p-5 ${
+          className={`rounded-cartao border p-5 ${
             resultado.aprovada
-              ? "border-[#17864F]/30 bg-[#17864F]/5"
-              : "border-ink-200 bg-ink-50"
+              ? "border-sucesso/35 bg-sucesso/10"
+              : "border-contorno bg-superficie-2"
           }`}
         >
-          <p className="font-medium text-ink-900">
+          <p className="font-medium text-texto">
             {resultado.pontuacao} de {resultado.total} certas ({percentagem}%)
           </p>
 
-          <p className="mt-2 text-justify text-sm leading-relaxed text-ink-700">
+          <p className="mt-2 text-justify text-sm leading-relaxed text-texto/80">
             {resultado.aprovada
               ? "Tópico concluído. Podes avançar, ou repetir com outras perguntas para consolidar."
               : `${mensagemFalha} Lê as explicações acima antes de tentares de novo.`}
@@ -170,7 +170,7 @@ export function QuizLicao({
               type="button"
               onClick={repetir}
               disabled={pendente}
-              className="inline-flex items-center gap-2 rounded-lg border border-ink-300 bg-white px-5 py-2.5 text-sm font-medium text-ink-800 transition-colors hover:border-ink-400 disabled:opacity-40"
+              className="inline-flex items-center gap-2 rounded-campo border border-contorno-forte bg-superficie-2 px-5 py-2.5 text-sm font-medium text-texto transition-colors hover:border-contorno-forte disabled:opacity-40"
             >
               <RotateCcw size={14} aria-hidden="true" />
               {pendente ? "A preparar…" : "Tentar outra vez"}
@@ -180,7 +180,7 @@ export function QuizLicao({
               <button
                 type="button"
                 onClick={aoAvancar}
-                className="inline-flex items-center gap-2 rounded-lg bg-[#17864F] px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+                className="inline-flex items-center gap-2 rounded-campo bg-sucesso px-5 py-2.5 text-sm font-medium text-acento-contraste transition-colors hover:brightness-110"
               >
                 Avançar
                 <ArrowRight size={14} aria-hidden="true" />

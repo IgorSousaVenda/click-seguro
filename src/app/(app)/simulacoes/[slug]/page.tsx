@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { obterSessao } from "@/lib/sessao";
+import { exigirSessao } from "@/lib/sessao";
 import { ConversaSimulacao } from "@/components/conversa-simulacao";
 
 export default async function Simulacao({
@@ -9,8 +9,8 @@ export default async function Simulacao({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const sessao = await obterSessao();
-  const userId = sessao!.user.id;
+  const sessao = await exigirSessao();
+  const userId = sessao.user.id;
 
   const simulacao = await prisma.simulacao.findUnique({
     where: { slug },

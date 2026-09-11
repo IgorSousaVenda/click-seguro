@@ -13,7 +13,7 @@ export function ConteudoLicao({ texto }: { texto: string }) {
           return (
             <blockquote
               key={i}
-              className="rounded-r-lg border-l-4 border-[#1668D9] bg-[#1668D9]/5 py-4 pl-5 pr-4 text-[15px] italic leading-relaxed text-ink-800"
+              className="rounded-r-lg border-l-4 border-acento bg-acento/8 py-4 pl-5 pr-4 text-[15px] italic leading-relaxed text-texto"
             >
               {linhas.map((l) => l.replace(/^>\s?/, "")).join(" ")}
             </blockquote>
@@ -27,10 +27,10 @@ export function ConteudoLicao({ texto }: { texto: string }) {
               {linhas.map((linha, j) => (
                 <li
                   key={j}
-                  className="flex gap-3 text-[15px] leading-relaxed text-ink-700"
+                  className="flex gap-3 text-[15px] leading-relaxed text-texto/80"
                 >
                   <span
-                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#1668D9]"
+                    className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-acento"
                     aria-hidden="true"
                   />
                   <span>
@@ -45,7 +45,7 @@ export function ConteudoLicao({ texto }: { texto: string }) {
         return (
           <p
             key={i}
-            className="text-[15px] leading-relaxed text-ink-700 text-justify"
+            className="text-[15px] leading-relaxed text-texto/80 text-justify"
           >
             <TextoRico>{bloco}</TextoRico>
           </p>

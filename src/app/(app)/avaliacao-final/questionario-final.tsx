@@ -64,21 +64,21 @@ export function QuestionarioFinal({
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-8">
-        <div className="mb-2 flex items-center justify-between text-sm text-ink-600">
+        <div className="mb-2 flex items-center justify-between text-sm text-texto-suave">
           <span>
             Pergunta {indice + 1} de {perguntas.length}
           </span>
           <span>Avaliação final</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-ink-200">
+        <div className="h-2 overflow-hidden rounded-full bg-superficie-3">
           <div
-            className="h-full rounded-full bg-[#17864F] transition-all duration-300"
+            className="h-full rounded-full bg-sucesso transition-all duration-300"
             style={{ width: `${progresso}%` }}
           />
         </div>
       </div>
 
-      <h1 className="text-xl font-semibold leading-snug text-ink-900">
+      <h1 className="text-xl font-semibold leading-snug text-texto">
         <TextoRico>{pergunta.enunciado}</TextoRico>
       </h1>
 
@@ -91,10 +91,10 @@ export function QuestionarioFinal({
               type="button"
               onClick={() => escolher(opcao.id)}
               aria-pressed={ativa}
-              className={`w-full rounded-xl border p-4 text-left text-[15px] leading-snug transition-colors ${
+              className={`w-full rounded-cartao border p-4 text-left text-[15px] leading-snug transition-colors ${
                 ativa
-                  ? "border-[#17864F] bg-[#17864F]/5 text-ink-900"
-                  : "border-ink-200 bg-white text-ink-700 hover:border-ink-300"
+                  ? "border-sucesso bg-sucesso/10 text-texto"
+                  : "border-contorno bg-superficie-2 text-texto/80 hover:border-contorno-forte"
               }`}
             >
               {opcao.texto}
@@ -108,7 +108,7 @@ export function QuestionarioFinal({
           type="button"
           onClick={() => setIndice(indice - 1)}
           disabled={indice === 0 || aSubmeter}
-          className="flex items-center gap-1 text-sm text-ink-600 hover:text-ink-900 disabled:invisible"
+          className="flex items-center gap-1 text-sm text-texto-suave hover:text-texto disabled:invisible"
         >
           <ChevronLeft size={16} aria-hidden="true" />
           Anterior
@@ -118,13 +118,13 @@ export function QuestionarioFinal({
           type="button"
           onClick={avancar}
           disabled={!escolhida || aSubmeter}
-          className="rounded-lg bg-[#17864F] px-6 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+          className="rounded-campo bg-sucesso px-6 py-2.5 text-sm font-medium text-acento-contraste transition-colors hover:brightness-110 disabled:opacity-40"
         >
           {aSubmeter ? "A guardar…" : ultima ? "Concluir" : "Seguinte"}
         </button>
       </div>
 
-      <p className="mt-8 text-center text-sm text-ink-500">
+      <p className="mt-8 text-center text-sm text-texto-tenue">
         As mesmas perguntas do início, por outra ordem. O que mudou é o que
         sabes.
       </p>

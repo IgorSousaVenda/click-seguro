@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { obterSessao } from "@/lib/sessao";
+import { exigirSessao } from "@/lib/sessao";
 import { QuestionarioFinal } from "./questionario-final";
 
 function baralhar<T>(lista: T[]): T[] {
@@ -13,8 +13,8 @@ function baralhar<T>(lista: T[]): T[] {
 }
 
 export default async function AvaliacaoFinal() {
-  const sessao = await obterSessao();
-  const userId = sessao!.user.id;
+  const sessao = await exigirSessao();
+  const userId = sessao.user.id;
 
   const jaFez = await prisma.avaliacao.findFirst({
     where: { userId, tipo: "FINAL", concluidaEm: { not: null } },

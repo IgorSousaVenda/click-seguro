@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { obterSessao } from "@/lib/sessao";
+import { exigirSessao } from "@/lib/sessao";
 import { AcordeaoLicoes } from "@/components/acordeao-licoes";
 import { obterPerguntasDaTentativa } from "@/lib/acoes/quiz";
 import { redirect } from "next/navigation";
@@ -13,8 +13,8 @@ export default async function Modulo({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const sessao = await obterSessao();
-  const userId = sessao!.user.id;
+  const sessao = await exigirSessao();
+  const userId = sessao.user.id;
 
   const modulo = await prisma.modulo.findUnique({
     where: { slug },
@@ -70,15 +70,15 @@ export default async function Modulo({
 
   return (
     <div className="mx-auto max-w-2xl">
-      <Link href="/inicio" className="text-sm text-ink-600 hover:text-ink-900">
+      <Link href="/inicio" className="text-sm text-texto-suave hover:text-texto">
         ← Módulos
       </Link>
 
-      <h1 className="mt-4 text-2xl font-semibold text-ink-900">
+      <h1 className="mt-4 text-2xl font-semibold text-texto">
         {modulo.titulo}
       </h1>
-      <p className="mt-2 text-ink-600">{modulo.descricao}</p>
-      <p className="mt-4 text-sm text-ink-500">
+      <p className="mt-2 text-texto-suave">{modulo.descricao}</p>
+      <p className="mt-4 text-sm text-texto-tenue">
         {feitas.size} de {modulo.licoes.length} tópicos concluídos
       </p>
 

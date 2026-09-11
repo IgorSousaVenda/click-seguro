@@ -8,7 +8,7 @@ import {
   Smartphone,
 } from "lucide-react";
 import { prisma } from "@/lib/db";
-import { obterSessao } from "@/lib/sessao";
+import { exigirSessao } from "@/lib/sessao";
 import { obterAcesso } from "@/lib/acesso";
 
 const icones = {
@@ -26,8 +26,8 @@ const nomeCanal = {
 } as const;
 
 export default async function Simulacoes() {
-  const sessao = await obterSessao();
-  const userId = sessao!.user.id;
+  const sessao = await exigirSessao();
+  const userId = sessao.user.id;
 
   const acesso = await obterAcesso(userId);
 
@@ -56,15 +56,15 @@ export default async function Simulacoes() {
   return (
     <div className="mx-auto max-w-2xl space-y-8">
       <div>
-        <h1 className="text-2xl font-semibold text-ink-900">Simulações</h1>
-        <p className="mt-2 text-justify leading-relaxed text-ink-600">
+        <h1 className="text-2xl font-semibold text-texto">Simulações</h1>
+        <p className="mt-2 text-justify leading-relaxed text-texto-suave">
           Situações que acontecem em tempo real, com decisões que mudam o
           desfecho. Nem todas são fraude: faz parte do exercício distinguir.
         </p>
       </div>
 
       {!acesso.fezDiagnostico && (
-        <p className="rounded-xl border border-dashed border-ink-300 p-6 text-sm text-ink-500">
+        <p className="rounded-cartao border border-dashed border-contorno-forte p-6 text-sm text-texto-tenue">
           As simulações ficam disponíveis depois da avaliação diagnóstica.
         </p>
       )}
@@ -81,8 +81,8 @@ export default async function Simulacoes() {
                 <span
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${
                     bloqueada
-                      ? "bg-ink-100 text-ink-400"
-                      : "bg-[#1668D9]/10 text-[#1668D9]"
+                      ? "bg-superficie-3 text-texto-tenue"
+                      : "bg-acento/15 text-acento"
                   }`}
                 >
                   {bloqueada ? (
@@ -94,16 +94,16 @@ export default async function Simulacoes() {
 
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-2">
-                    <span className="font-medium text-ink-900">
+                    <span className="font-medium text-texto">
                       {sim.titulo}
                     </span>
-                    <span className="rounded border border-ink-200 px-1.5 py-0.5 text-xs text-ink-500">
+                    <span className="rounded border border-contorno px-1.5 py-0.5 text-xs text-texto-tenue">
                       {nomeCanal[sim.canal as keyof typeof nomeCanal] ??
                         sim.canal}
                     </span>
                   </span>
 
-                  <span className="mt-1 block text-justify text-sm leading-relaxed text-ink-600">
+                  <span className="mt-1 block text-justify text-sm leading-relaxed text-texto-suave">
                     {bloqueada
                       ? `Conclui o módulo ${sim.moduloMinimo - 1} para desbloquear.`
                       : sim.contexto}
@@ -113,10 +113,10 @@ export default async function Simulacoes() {
                     <span
                       className={`mt-2 inline-block text-sm ${
                         ultima.desfecho === "SEGURO"
-                          ? "text-[#17864F]"
+                          ? "text-sucesso"
                           : ultima.desfecho === "COMPROMETIDO"
-                            ? "text-[#C4302B]"
-                            : "text-ink-500"
+                            ? "text-perigo"
+                            : "text-texto-tenue"
                       }`}
                     >
                       {ultima.desfecho === "SEGURO"
@@ -131,7 +131,7 @@ export default async function Simulacoes() {
                 {!bloqueada && (
                   <ArrowRight
                     size={16}
-                    className="shrink-0 text-ink-400"
+                    className="shrink-0 text-texto-tenue"
                     aria-hidden="true"
                   />
                 )}
@@ -142,7 +142,7 @@ export default async function Simulacoes() {
               return (
                 <div
                   key={sim.id}
-                  className="flex items-start gap-4 rounded-xl border border-ink-200 bg-white p-5 opacity-60"
+                  className="flex items-start gap-4 rounded-cartao border border-contorno bg-superficie-2 p-5 opacity-60"
                 >
                   {corpo}
                 </div>
@@ -153,7 +153,7 @@ export default async function Simulacoes() {
               <Link
                 key={sim.id}
                 href={`/simulacoes/${sim.slug}`}
-                className="flex items-start gap-4 rounded-xl border border-ink-200 bg-white p-5 transition-colors hover:border-ink-300"
+                className="flex items-start gap-4 rounded-cartao border border-contorno bg-superficie-2 p-5 transition-colors hover:border-contorno-forte"
               >
                 {corpo}
               </Link>

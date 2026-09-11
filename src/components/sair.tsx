@@ -20,7 +20,7 @@ export function Sair() {
     <button
       onClick={terminar}
       disabled={aSair}
-      className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-900 disabled:opacity-50"
+      className="flex items-center gap-2 rounded-campo px-3 py-2 text-sm text-texto-suave transition-colors hover:bg-texto/8 hover:text-texto disabled:opacity-50"
     >
       <LogOut size={16} aria-hidden="true" />
       {aSair ? "A sair…" : "Sair"}

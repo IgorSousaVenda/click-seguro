@@ -19,9 +19,9 @@ export function GraficoEvolucao({
   final: number | null;
 }) {
   const dados = [
-    { etapa: "Antes", valor: diagnostico, cor: "#94A3B8" },
+    { etapa: "Antes", valor: diagnostico, cor: "var(--color-texto-tenue)" },
     ...(final !== null
-      ? [{ etapa: "Depois", valor: final, cor: "#17864F" }]
+      ? [{ etapa: "Depois", valor: final, cor: "var(--color-sucesso)" }]
       : []),
   ];
 
@@ -34,19 +34,19 @@ export function GraficoEvolucao({
         >
           <CartesianGrid
             strokeDasharray="3 3"
-            stroke="#E2E8F0"
+            stroke="var(--color-contorno)"
             vertical={false}
           />
           <XAxis
             dataKey="etapa"
-            tick={{ fill: "#475569", fontSize: 13 }}
-            axisLine={{ stroke: "#CBD5E1" }}
+            tick={{ fill: "var(--color-texto-suave)", fontSize: 13 }}
+            axisLine={{ stroke: "var(--color-contorno-forte)" }}
             tickLine={false}
           />
           <YAxis
             domain={[0, 100]}
             ticks={[0, 25, 50, 75, 100]}
-            tick={{ fill: "#94A3B8", fontSize: 12 }}
+            tick={{ fill: "var(--color-texto-tenue)", fontSize: 12 }}
             axisLine={false}
             tickLine={false}
             unit="%"
@@ -64,7 +64,7 @@ export function GraficoEvolucao({
               dataKey="valor"
               position="top"
               formatter={(v: unknown) => `${v}%`}
-              style={{ fill: "#0F172A", fontSize: 13, fontWeight: 600 }}
+              style={{ fill: "var(--color-texto)", fontSize: 13, fontWeight: 600 }}
             />
           </Bar>
         </BarChart>

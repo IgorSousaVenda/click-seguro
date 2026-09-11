@@ -1,11 +1,22 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 
+type Variante = "primario" | "secundario" | "fantasma" | "perigo";
+
 interface BotaoProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variante?: "primario" | "secundario" | "fantasma";
+  variante?: Variante;
   carregando?: boolean;
 }
+
+const VARIANTES: Record<Variante, string> = {
+  primario:
+    "bg-acento text-acento-contraste hover:bg-acento-forte disabled:bg-superficie-3 disabled:text-texto-tenue",
+  secundario:
+    "border border-contorno-forte bg-superficie-2 text-texto hover:border-acento/50 hover:bg-superficie-3 disabled:text-texto-tenue",
+  fantasma:
+    "text-texto-suave hover:bg-texto/8 hover:text-texto disabled:text-texto-tenue",
+  perigo:
+    "bg-perigo text-acento-contraste hover:brightness-110 disabled:bg-superficie-3 disabled:text-texto-tenue",
+};
 
 export function Botao({
   variante = "primario",
@@ -15,25 +26,15 @@ export function Botao({
   disabled,
   ...props
 }: BotaoProps) {
-  const variantes = {
-    primario: "bg-brand-500 text-white hover:bg-brand-600",
-    secundario:
-      "bg-white text-brand-500 border border-brand-200 hover:bg-brand-50",
-    fantasma: "bg-transparent text-ink-700 hover:bg-ink-100",
-  };
-
   return (
     <button
       disabled={disabled || carregando}
       aria-busy={carregando}
       className={cn(
-        "inline-flex items-center justify-center gap-2",
-        "h-11 px-5 rounded-btn text-sm font-medium",
-        "transition-all duration-150",
-        "active:scale-[.97]",
-        "focus-visible:outline-none focus-visible:shadow-[0_0_0_3px_rgba(22,104,217,.28)]",
-        "disabled:bg-ink-100 disabled:text-ink-300 disabled:cursor-not-allowed disabled:active:scale-100",
-        variantes[variante],
+        "inline-flex h-11 items-center justify-center gap-2 rounded-campo px-5",
+        "text-sm font-semibold transition-colors duration-150",
+        "active:scale-[.98] disabled:cursor-not-allowed disabled:active:scale-100",
+        VARIANTES[variante],
         className,
       )}
       {...props}

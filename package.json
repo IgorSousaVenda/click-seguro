@@ -6,7 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "db:migrate": "prisma migrate deploy",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:seed": "tsx prisma/seed.ts && tsx prisma/seed-licoes.ts && tsx prisma/seed-quizzes.ts && tsx prisma/seed-diagnostico.ts && tsx prisma/seed-simulacoes.ts",
+    "typecheck": "tsc --noEmit",
+    "verificar": "npm run typecheck && npm run lint && npm run build",
+    "docker:build": "docker build -t click-seguro ."
   },
   "dependencies": {
     "@hookform/resolvers": "^5.7.1",
@@ -17,6 +24,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^1.30.0",
     "next": "16.3.0",
+    "nodemailer": "^10.0.3",
     "prisma": "^7.9.1",
     "react": "19.2.8",
     "react-dom": "19.2.8",
@@ -26,16 +34,22 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@mermaid-js/mermaid-cli": "^11.16.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv": "^17.4.2",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
-    "prisma-erd-generator": "^2.4.4",
     "tailwindcss": "^4",
     "tsx": "^4.23.12",
     "typescript": "^5"
+  },
+  "allowScripts": {
+    "@prisma/engines@7.10.0": true,
+    "esbuild@0.28.2": true,
+    "prisma@7.10.0": true,
+    "unrs-resolver@1.12.2": true
   }
 }

@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { obterSessao } from "@/lib/sessao";
+import { exigirSessao } from "@/lib/sessao";
 import { Questionario } from "./questionario";
 
 export default async function Diagnostico() {
-  const sessao = await obterSessao();
-  const userId = sessao!.user.id;
+  const sessao = await exigirSessao();
+  const userId = sessao.user.id;
 
   const jaConcluido = await prisma.avaliacao.findFirst({
     where: { userId, tipo: "DIAGNOSTICO", concluidaEm: { not: null } },

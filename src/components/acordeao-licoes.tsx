@@ -33,8 +33,8 @@ export function AcordeaoLicoes({ topicos }: { topicos: Topico[] }) {
         return (
           <div
             key={topico.id}
-            className={`overflow-hidden rounded-xl border bg-white ${
-              topico.bloqueada ? "border-ink-200 opacity-60" : "border-ink-200"
+            className={`overflow-hidden rounded-cartao border bg-superficie-2 ${
+              topico.bloqueada ? "border-contorno opacity-60" : "border-contorno"
             }`}
           >
             <button
@@ -47,10 +47,10 @@ export function AcordeaoLicoes({ topicos }: { topicos: Topico[] }) {
               <span
                 className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-medium ${
                   topico.concluida
-                    ? "bg-[#17864F]/10 text-[#17864F]"
+                    ? "bg-sucesso/15 text-sucesso"
                     : topico.bloqueada
-                      ? "bg-ink-100 text-ink-400"
-                      : "bg-[#1668D9]/10 text-[#1668D9]"
+                      ? "bg-superficie-3 text-texto-tenue"
+                      : "bg-acento/15 text-acento"
                 }`}
               >
                 {topico.concluida ? (
@@ -63,10 +63,10 @@ export function AcordeaoLicoes({ topicos }: { topicos: Topico[] }) {
               </span>
 
               <span className="min-w-0 flex-1">
-                <span className="block font-medium text-ink-900">
+                <span className="block font-medium text-texto">
                   {topico.titulo}
                 </span>
-                <span className="mt-0.5 block text-sm text-ink-500">
+                <span className="mt-0.5 block text-sm text-texto-tenue">
                   {topico.bloqueada
                     ? "Conclui o tópico anterior com 70% para desbloquear"
                     : `${topico.duracaoEstimada} min · ${topico.perguntas.length} perguntas`}
@@ -77,7 +77,7 @@ export function AcordeaoLicoes({ topicos }: { topicos: Topico[] }) {
                 <ChevronDown
                   size={18}
                   aria-hidden="true"
-                  className={`shrink-0 text-ink-400 transition-transform duration-200 ${
+                  className={`shrink-0 text-texto-tenue transition-transform duration-200 ${
                     expandido ? "rotate-180" : ""
                   }`}
                 />
@@ -90,12 +90,12 @@ export function AcordeaoLicoes({ topicos }: { topicos: Topico[] }) {
               }`}
             >
               <div className="overflow-hidden">
-                <div className="border-t border-ink-200 p-5">
+                <div className="border-t border-contorno p-5">
                   <ConteudoLicao texto={topico.conteudo} />
 
                   {topico.perguntas.length > 0 && (
-                    <div className="mt-10 border-t border-ink-200 pt-8">
-                      <h3 className="mb-5 font-semibold text-ink-900">
+                    <div className="mt-10 border-t border-contorno pt-8">
+                      <h3 className="mb-5 font-semibold text-texto">
                         Verifica o que percebeste
                       </h3>
                       <QuizLicao
